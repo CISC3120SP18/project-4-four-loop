@@ -32,6 +32,12 @@ public class TreasureFrameViewController {
     private Button buttonTreasure;
 
     @FXML
+    private Button buttonContinue;
+    
+    @FXML
+    private Button buttonQuit;
+    
+    @FXML
     private Label totalScoreLabel;
 
     @FXML
@@ -120,6 +126,13 @@ public class TreasureFrameViewController {
 		buttonTreasure.setOnAction(handler);
 	}
 
+	public void setOnContinueButtonAction(EventHandler<ActionEvent> handler) {
+		buttonContinue.setOnAction(handler);
+	}
+	
+	public void setOnQuitButtonAction(EventHandler<ActionEvent> handler) {
+		buttonQuit.setOnAction(handler);
+	}
 	
 	private void initializeScore() {
 		totalScoreLabel.setText(String.format(GameSettings.SCORE_FORMAT, 0));

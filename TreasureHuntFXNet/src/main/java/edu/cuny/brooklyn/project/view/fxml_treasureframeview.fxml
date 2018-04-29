@@ -41,6 +41,10 @@
 				<TextField fx:id="yPosTreasure" />
 				<Button fx:id="buttonTreasure" mnemonicParsing="false"
 					text="%locateTreasure" />
+				<Button fx:id="buttonContinue" mnemonicParsing="false"
+					text="%continueGame" />
+				<Button fx:id="buttonQuit" mnemonicParsing="false"
+					text="%quitGame" />	
 			</children>
 			<GridPane.margin>
 				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
