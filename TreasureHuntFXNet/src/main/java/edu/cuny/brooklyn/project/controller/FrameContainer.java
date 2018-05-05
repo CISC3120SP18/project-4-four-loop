@@ -40,6 +40,7 @@ public class FrameContainer {
 	private TreasureHuntState treasureHuntState;
 	
 	private StatusBroadcaster statusBroadcaster;
+	private GameStatisticsApp statistics;
 	
 	public FrameContainer(Stage stage, ResourceBundle bundle) throws IOException {
 		initializeContainer(stage, bundle);
@@ -58,6 +59,16 @@ public class FrameContainer {
 			throw new IllegalArgumentException("StatusBroadcaster object must not be null.");
 		}
 		this.statusBroadcaster = statusBroadcaster;
+		
+		mainViewController.setStatusBroadcaster(this.statusBroadcaster);
+	}
+	
+
+	public void setGameStatistics (GameStatisticsApp statistics) {
+		if (statistics == null) {
+			throw new IllegalArgumentException("StatusBroadcaster object must not be null.");
+		}
+		this.statistics = statistics;
 		
 		mainViewController.setStatusBroadcaster(this.statusBroadcaster);
 	}
@@ -106,7 +117,7 @@ public class FrameContainer {
 		flashFrame = fxmlLoader.load();
 		flashFrameController = fxmlLoader.getController();
 		
-		
+	//	puzzlerFrameController.setGameStatistics(statistics);
 		flashFrameController.setOnStartButtonAction(e -> startGame());
 		puzzlerFrameController.setOnAnswerButtonAction(e -> answerPuzzler());
 		treasureFrameController.setOnButtonTreasureAction(e -> treasureFrameController.doTreasureLocationAction());
@@ -168,4 +179,7 @@ public class FrameContainer {
 		showPuzzlerScreen();
 		mainViewController.disableLocaleChange();
 	}
+
+
+
 }

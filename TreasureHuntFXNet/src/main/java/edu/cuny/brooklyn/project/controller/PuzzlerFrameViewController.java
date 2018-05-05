@@ -28,6 +28,7 @@ public class PuzzlerFrameViewController {
 	private Puzzler puzzler;
 	private int  answeringAttempts;
 
+	private GameStatisticsApp statistics;
 	
 	public void initialize() {
 		puzzlerMaker = new PuzzlerMaker();
@@ -65,4 +66,7 @@ public class PuzzlerFrameViewController {
 			return true;
 		}
 	}
+
+
+	
 }
