@@ -28,6 +28,7 @@ public class TreasureHuntFXApp extends Application {
 
 	private StatusBroadcaster statusBroadcaster;
 	private StatusReciever statusReciever;
+	private GameStatisticsApp statistics;
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -43,13 +44,12 @@ public class TreasureHuntFXApp extends Application {
 
 		statusReciever = new StatusReciever();
 		statusBroadcaster = new StatusBroadcaster();
+		statistics = new GameStatisticsApp();
+		frameContainer.setGameStatistics(statistics);
 		FrameContainer frameContainer = new FrameContainer(primaryStage, bundle, statusReciever);
 		frameContainer.setStatusBroadcaster(statusBroadcaster);
 		frameContainer.showFlashScreen(); // where the game begins
-		statusBroadcaster.start();
-		GameStatisticsApp statisticsObject = new GameStatisticsApp();
-		GameStatisticsApp statistics;
-	//	frameContainer.setGameStatistics(statistics);
+
 		LOGGER.info("TreasureHuntFXApp exits.");
 	}
 
