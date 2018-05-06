@@ -58,12 +58,11 @@ public class FrameContainer {
 	private TreasureHuntState treasureHuntState;
 	
 	private StatusBroadcaster statusBroadcaster;
-<<<<<<< HEAD
 
 	private StatusReciever statusReciever;
-=======
+	
 	private GameStatisticsApp statistics;
->>>>>>> 9137bf97488fc556ede013736adf75b7ebd1fb26
+
 	
 	public FrameContainer(Stage stage, ResourceBundle bundle, StatusReciever statusReciever) throws IOException {
 		this.statusReciever = statusReciever;
@@ -150,15 +149,14 @@ public class FrameContainer {
 		multiplayerFrame = fxmlLoader.load();
 		multiplayerViewController = fxmlLoader.getController();
 		
-<<<<<<< HEAD
 		recievingThread = new Thread(statusReciever);
 		statusReciever.getPartialResults().addListener((Change<? extends StatusMessage> c) -> multiplayerViewController.handleNewPlayer(c));
 		recievingThread.setDaemon(true);
 		recievingThread.start();
 		
-=======
-	//	puzzlerFrameController.setGameStatistics(statistics);
->>>>>>> 9137bf97488fc556ede013736adf75b7ebd1fb26
+		statistics = new GameStatisticsApp();
+		puzzlerFrameController.setGameStatistics(statistics);
+
 		flashFrameController.setOnStartButtonAction(e -> startGame());
 		flashFrameController.setOnStartMultiButtonAction(e -> startMultiplayerGame());
 		puzzlerFrameController.setOnAnswerButtonAction(e -> answerPuzzler());
@@ -237,7 +235,6 @@ public class FrameContainer {
 		showPuzzlerScreen();
 		mainViewController.disableLocaleChange();
 	}
-<<<<<<< HEAD
 	
 	private void startMultiplayerGame() {
 		final Stage multiSetup = new Stage();
@@ -248,27 +245,6 @@ public class FrameContainer {
 		multiSetup.setTitle(GameSettings.MSG_APP_TITLE_MULTIPLAYER_LIST_KEY);
 		multiSetup.setScene(multiPopup);
 		multiSetup.show();
-		
-		/*
-		VBox parent = new VBox();
-		HBox labels = new HBox();
-		Label one = new Label("Username");
-		Button two = new Button("click me");
-		two.setOnAction(e -> one.setText("sdfhsldfhsdf"));
-		labels.setSpacing(20);
-		
-		labels.getChildren().addAll(one, new Label("Address (IP:TCP)"), new Label("UDP port"), two);
-		parent.getChildren().add(labels);
-		
-		Scene nearbyPlayerView = new Scene(parent, 500, 500);
-		multiSetup.setScene(nearbyPlayerView);
-		
-		*/
 	
 	}
-=======
-
-
-
->>>>>>> 9137bf97488fc556ede013736adf75b7ebd1fb26
 }
