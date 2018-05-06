@@ -11,6 +11,7 @@ import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -25,6 +26,7 @@ public class StatusBroadcaster {
 	private final static long PERIOD_BETWEEN_RUNS = 10000; // 10000 milliseconds
 	private final static int BROADCAST_UDP_PORT = 62017;
 	private final static int BUFFER_SIZE = 8096;
+	private static String username = null;
 	private Timer timer;
 	private TimerTask task;
 	private DatagramSocket socket;
@@ -50,6 +52,10 @@ public class StatusBroadcaster {
 		 * online
 		 */
 		tcpPort = getFreeTcpPort();
+	}
+
+	public void setUserName(String usn) {
+		username = usn;
 	}
 
 	public synchronized void close() {
@@ -81,7 +87,7 @@ public class StatusBroadcaster {
 								continue;
 
 							StatusMessage message = new StatusMessage(interfaceAddress.getAddress(), tcpPort);
-
+								message.setName(username);
 							try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
 									ObjectOutputStream oos = new ObjectOutputStream(baos)) {
 								oos.writeObject(message);

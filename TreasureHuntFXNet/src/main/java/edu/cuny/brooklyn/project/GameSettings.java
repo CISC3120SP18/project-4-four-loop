@@ -57,10 +57,12 @@ public class GameSettings {
 	public static final String TREASURE_VIEW_PATH = "edu/cuny/brooklyn/project/view/fxml_treasureframeview.fxml";
 	public static final String PUZZLER_VIEW_PATH = "edu/cuny/brooklyn/project/view/fxml_puzzlerframeview.fxml";
 	public static final String FLASH_VIEW_PATH = "edu/cuny/brooklyn/project/view/fxml_flashframeview.fxml";
+	public static final String MULTIPLAYER_VIEW_PATH = "edu/cuny/brooklyn/project/view/fxml_multiplayerframeview.fxml";
 
 	
 	public final static String MSG_GAME_DESCRIPTION_KEY = "gameDescription";
 	public final static String MSG_START_GAME_KEY = "startGame";
+	public final static String MSG_START_MULTI_GAME_KEY = "startMultiGame";
 	public final static String MSG_APP_TITLE_FLASH_KEY = "appTitleFlash";
 	
 	public final static String MSG_ANSWER_PUZZLER_KEY = "answerPuzzler";
@@ -74,4 +76,12 @@ public class GameSettings {
 	
 	public final static String MSG_TREASURE_CLUE_PART_1_KEY = "treasureClue1stPart";
 	public final static String MSG_TREASURE_CLUE_PART_2_KEY = "treasureClue2ndPart";
+
+	public final static String MSG_APP_TITLE_MULTIPLAYER_LIST_KEY = "appTitleMultiplayerList";
+	public final static String MSG_MULTIPLAYER_USERNAME = "username";
+	public final static String MSG_MULTIPLAYER_TCP_LABEL = "tcpAddress";
+	public final static String MSG_MULTIPLAYER_UDP_LABEL = "udpPort";
+	public static final String USN_DIALOG_TITLE_TEXT = "usnTitle";
+	public static final String USN_DIALOG_HEADER_TEXT = "usnHeader";
+	public static final String USN_DIALOG_CONTENT_TEXT = "usnContext";
 }

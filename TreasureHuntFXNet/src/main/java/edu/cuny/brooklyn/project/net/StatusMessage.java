@@ -5,10 +5,26 @@ import java.net.InetAddress;
 
 public class StatusMessage implements Serializable {
     private static final long serialVersionUID = -666227046530917575L;
-
+    private String username;
+    private int udpPort;
     private InetAddress address;
     private int tcpServicePort;
+
+    public int getUdpPort() {
+    	return udpPort;
+    }
     
+    public void setUdpPort(int p) {
+    	udpPort = p;
+    }
+    
+    public String getName() {
+        return username;
+    }
+
+    public void setName(String n) {
+        username = n;
+    }
     
     public InetAddress getAddress() {
         return address;

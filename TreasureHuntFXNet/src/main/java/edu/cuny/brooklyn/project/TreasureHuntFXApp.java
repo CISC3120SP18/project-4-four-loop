@@ -16,7 +16,9 @@ import org.slf4j.LoggerFactory;
 import edu.cuny.brooklyn.project.controller.FrameContainer;
 import edu.cuny.brooklyn.project.message.I18n;
 import edu.cuny.brooklyn.project.net.StatusBroadcaster;
+import edu.cuny.brooklyn.project.net.StatusReciever;
 import javafx.application.Application;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -24,26 +26,25 @@ public class TreasureHuntFXApp extends Application {
 	private final static Logger LOGGER = LoggerFactory.getLogger(TreasureHuntFXApp.class);
 
 	private StatusBroadcaster statusBroadcaster;
-
+	private StatusReciever statusReciever;
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	private static void print(String s) { System.out.println(s); }
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		LOGGER.info("TreasureHuntFXApp started.");
 
 		ResourceBundle bundle = ResourceBundle.getBundle(I18n.getBundleBaseName(), I18n.getDefaultLocale());
-		primaryStage.getIcons()
-				.add(new Image(getClass().getClassLoader().getResourceAsStream(GameSettings.APP_ICON_IMAGE)));
-		FrameContainer frameContainer = new FrameContainer(primaryStage, bundle);
-		frameContainer.showFlashScreen(); // where the game begins
+		primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream(GameSettings.APP_ICON_IMAGE)));
 
+		statusReciever = new StatusReciever();
 		statusBroadcaster = new StatusBroadcaster();
-		statusBroadcaster.start();
-		
+		FrameContainer frameContainer = new FrameContainer(primaryStage, bundle, statusReciever);
 		frameContainer.setStatusBroadcaster(statusBroadcaster);
-
+		frameContainer.showFlashScreen(); // where the game begins
 		LOGGER.info("TreasureHuntFXApp exits.");
 	}
 
