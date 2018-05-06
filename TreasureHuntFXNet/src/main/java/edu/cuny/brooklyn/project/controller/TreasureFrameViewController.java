@@ -60,6 +60,8 @@ public class TreasureFrameViewController {
 	private int puzzlerAttempts;
 	private TreasureField treasureField;
 	
+	private GameStatisticsApp statistics;
+	
 	
 	// for resizing
 	private InvalidationListener resizeListener = o -> redrawTreasure();
@@ -115,6 +117,7 @@ public class TreasureFrameViewController {
 			doneGuessing();
 			showTreasure();
 			updateScore();
+			statistics.updateScore(scorer.getRoundScore(), scorer.getTotalScore());
 		} else {
 			LOGGER.debug("No treasure at location (" + xInput + "," + yInput + ")");
 			responseLabel.setVisible(true);

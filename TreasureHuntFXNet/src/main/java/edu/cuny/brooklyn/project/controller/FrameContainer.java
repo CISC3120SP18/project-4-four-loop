@@ -58,8 +58,12 @@ public class FrameContainer {
 	private TreasureHuntState treasureHuntState;
 	
 	private StatusBroadcaster statusBroadcaster;
+<<<<<<< HEAD
 
 	private StatusReciever statusReciever;
+=======
+	private GameStatisticsApp statistics;
+>>>>>>> 9137bf97488fc556ede013736adf75b7ebd1fb26
 	
 	public FrameContainer(Stage stage, ResourceBundle bundle, StatusReciever statusReciever) throws IOException {
 		this.statusReciever = statusReciever;
@@ -77,6 +81,16 @@ public class FrameContainer {
 			throw new IllegalArgumentException("StatusBroadcaster object must not be null.");
 		}
 		this.statusBroadcaster = statusBroadcaster;
+		
+		mainViewController.setStatusBroadcaster(this.statusBroadcaster);
+	}
+	
+
+	public void setGameStatistics (GameStatisticsApp statistics) {
+		if (statistics == null) {
+			throw new IllegalArgumentException("StatusBroadcaster object must not be null.");
+		}
+		this.statistics = statistics;
 		
 		mainViewController.setStatusBroadcaster(this.statusBroadcaster);
 	}
@@ -136,11 +150,15 @@ public class FrameContainer {
 		multiplayerFrame = fxmlLoader.load();
 		multiplayerViewController = fxmlLoader.getController();
 		
+<<<<<<< HEAD
 		recievingThread = new Thread(statusReciever);
 		statusReciever.getPartialResults().addListener((Change<? extends StatusMessage> c) -> multiplayerViewController.handleNewPlayer(c));
 		recievingThread.setDaemon(true);
 		recievingThread.start();
 		
+=======
+	//	puzzlerFrameController.setGameStatistics(statistics);
+>>>>>>> 9137bf97488fc556ede013736adf75b7ebd1fb26
 		flashFrameController.setOnStartButtonAction(e -> startGame());
 		flashFrameController.setOnStartMultiButtonAction(e -> startMultiplayerGame());
 		puzzlerFrameController.setOnAnswerButtonAction(e -> answerPuzzler());
@@ -219,6 +237,7 @@ public class FrameContainer {
 		showPuzzlerScreen();
 		mainViewController.disableLocaleChange();
 	}
+<<<<<<< HEAD
 	
 	private void startMultiplayerGame() {
 		final Stage multiSetup = new Stage();
@@ -247,4 +266,9 @@ public class FrameContainer {
 		*/
 	
 	}
+=======
+
+
+
+>>>>>>> 9137bf97488fc556ede013736adf75b7ebd1fb26
 }
