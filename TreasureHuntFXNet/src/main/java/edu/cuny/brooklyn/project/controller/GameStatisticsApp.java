@@ -14,9 +14,9 @@ import javafx.stage.Stage;
 
 public class GameStatisticsApp extends Application {
 	
-	public static void main(String[] args) {
-		launch(args);
-	}
+	//public static void main(String[] args) {
+	//	launch(args);
+	//}
 
 	private final static Logger LOGGER = LoggerFactory.getLogger(GameStatisticsApp.class);
 
@@ -34,10 +34,14 @@ public class GameStatisticsApp extends Application {
 	private int total_score;
 	
 	public void updateScore(int roundScore, int totalScore) {
-		
-		
+		round_score=roundScore;
+		total_score=totalScore;
 		
 	}
+	public void setAttempts(int answeringAttempts) {
+		max_attempt_location=answeringAttempts;
+		total_attempts=max_attempt_location;
+	}	
 	
 	public void start(Stage primaryStage) { 
 		

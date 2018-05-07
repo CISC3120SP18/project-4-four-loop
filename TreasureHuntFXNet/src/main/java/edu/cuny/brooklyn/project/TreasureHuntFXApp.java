@@ -45,8 +45,8 @@ public class TreasureHuntFXApp extends Application {
 		statusReciever = new StatusReciever();
 		statusBroadcaster = new StatusBroadcaster();
 		statistics = new GameStatisticsApp();
-		frameContainer.setGameStatistics(statistics);
 		FrameContainer frameContainer = new FrameContainer(primaryStage, bundle, statusReciever);
+		frameContainer.setGameStatistics(statistics);
 		frameContainer.setStatusBroadcaster(statusBroadcaster);
 		frameContainer.showFlashScreen(); // where the game begins
 

@@ -62,6 +62,8 @@ public class FrameContainer {
 	private StatusReciever statusReciever;
 	
 	private GameStatisticsApp statistics;
+	private GameStatisticsApp score;
+
 
 	
 	public FrameContainer(Stage stage, ResourceBundle bundle, StatusReciever statusReciever) throws IOException {
@@ -154,8 +156,8 @@ public class FrameContainer {
 		recievingThread.setDaemon(true);
 		recievingThread.start();
 		
-		statistics = new GameStatisticsApp();
-		puzzlerFrameController.setGameStatistics(statistics);
+		//statistics = new GameStatisticsApp();
+		//puzzlerFrameController.setGameStatistics(statistics);
 
 		flashFrameController.setOnStartButtonAction(e -> startGame());
 		flashFrameController.setOnStartMultiButtonAction(e -> startMultiplayerGame());

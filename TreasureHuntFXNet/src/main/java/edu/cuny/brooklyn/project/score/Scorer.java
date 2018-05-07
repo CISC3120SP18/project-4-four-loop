@@ -1,6 +1,8 @@
 package edu.cuny.brooklyn.project.score;
 
 import edu.cuny.brooklyn.project.GameSettings;
+import edu.cuny.brooklyn.project.controller.GameStatisticsApp;
+
 
 public class Scorer {
 
@@ -12,7 +14,9 @@ public class Scorer {
 		roundScore = 0;
 	}
 	
+	
 	public int getTotalScore() {
+		//total_score=total_score+totalScore;
 		return totalScore;
 	}
 
@@ -23,6 +27,7 @@ public class Scorer {
 	public void updateScore(int attempts) {
 		roundScore =  GameSettings.MAX_SCORE - (attempts - 1) * GameSettings.SCORE_PENALTY;
 		totalScore += roundScore;
+		
 	}
 
 }
