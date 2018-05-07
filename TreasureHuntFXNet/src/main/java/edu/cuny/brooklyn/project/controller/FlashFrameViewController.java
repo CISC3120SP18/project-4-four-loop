@@ -29,7 +29,7 @@ public class FlashFrameViewController {
      */
     public void initialize() {
 		flashLabel.setText(I18n.getBundle().getString(GameSettings.MSG_GAME_DESCRIPTION_KEY));
-		startButton.setText(I18n.getBundle().getString(GameSettings.MSG_START_GAME_KEY));
+	//	startButton.setText(I18n.getBundle().getString(GameSettings.MSG_START_GAME_KEY));
 		startMultiButton.setText(I18n.getBundle().getString(GameSettings.MSG_START_MULTI_GAME_KEY));
 
     }

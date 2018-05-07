@@ -27,9 +27,9 @@
          </GridPane.margin></Label>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
          <children>
-            <Button fx:id="startButton" mnemonicParsing="false" text="Button" />
+            <Button fx:id="startButton" mnemonicParsing="false" text="Play 1st Round" />
+            <Button fx:id="puzzlerButton" mnemonicParsing="false" text="Play 2nd Round" />
             <Button fx:id="startMultiButton" mnemonicParsing="false" text="Button" />
-            <Button fx:id="puzzlerButton" mnemonicParsing="false" text="Start Difficult Level" />
          </children>
       </HBox>
    </children>
