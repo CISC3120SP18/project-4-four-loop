@@ -14,6 +14,7 @@ import edu.cuny.brooklyn.project.message.I18n;
 import edu.cuny.brooklyn.project.net.StatusBroadcaster;
 import edu.cuny.brooklyn.project.net.StatusMessage;
 import edu.cuny.brooklyn.project.net.StatusReciever;
+import edu.cuny.brooklyn.project.puzzler.PuzzlerSettings;
 import edu.cuny.brooklyn.project.state.TreasureHuntState;
 import edu.cuny.brooklyn.project.treasure.TreasureGenerator;
 import javafx.fxml.FXMLLoader;
@@ -93,7 +94,6 @@ public class FrameContainer {
 		}
 		this.statistics = statistics;
 		
-		mainViewController.setStatusBroadcaster(this.statusBroadcaster);
 	}
 	
 	public void showFlashScreen() {
@@ -159,11 +159,12 @@ public class FrameContainer {
 		//statistics = new GameStatisticsApp();
 		//puzzlerFrameController.setGameStatistics(statistics);
 
-		flashFrameController.setOnStartButtonAction(e -> startGame());
+		flashFrameController.setOnStartButtonAction(e -> startGame(PuzzlerSettings.MATH_PUZZLER_SQRT));
 		flashFrameController.setOnStartMultiButtonAction(e -> startMultiplayerGame());
+		flashFrameController.setOnPuzzlerModeAction(e -> startGame(PuzzlerSettings.WORD_PUZZLER));
 		puzzlerFrameController.setOnAnswerButtonAction(e -> answerPuzzler());
 		treasureFrameController.setOnButtonTreasureAction(e -> treasureFrameController.doTreasureLocationAction());
-		treasureFrameController.setOnContinueButtonAction(e -> startGame());
+		treasureFrameController.setOnContinueButtonAction(e -> startGame(PuzzlerSettings.MATH_PUZZLER_SQRT));
 		treasureFrameController.setOnQuitButtonAction(e -> System.exit(0));
 		
 		if (treasureHuntState == null) {
@@ -189,11 +190,11 @@ public class FrameContainer {
 	}
 	
 	
-	private void showPuzzlerScreen() {
+	private void showPuzzlerScreen(int difficultyLevel) {
 		LOGGER.debug("showing puzzler screen.");
 		treasureFrameController.getTreasureField().placeTreasure();
 		LOGGER.debug("placed a treasure");
-		this.puzzlerFrameController.showNewPuzzler();
+		this.puzzlerFrameController.showNewPuzzler(difficultyLevel);
 		showScreenWithFrame(this.puzzlerFrame, GameSettings.MSG_APP_TITLE_PUZZLER_KEY);
 	}
 	
@@ -233,8 +234,17 @@ public class FrameContainer {
 	}
 
 
-	private void startGame() {
-		showPuzzlerScreen();
+	private void startGame(int difficultyLevel) {
+		GameSettings.MAX_SCORE = 100;
+		GameSettings.SCORE_PENALTY = 10;
+		showPuzzlerScreen(difficultyLevel);
+		mainViewController.disableLocaleChange();
+	}
+	
+	private void NextRound() {
+		GameSettings.MAX_SCORE = 100;
+		GameSettings.SCORE_PENALTY = 10;
+		showPuzzlerScreen(PuzzlerSettings.WORD_PUZZLER);
 		mainViewController.disableLocaleChange();
 	}
 	

@@ -25,7 +25,7 @@ public class Scorer {
 	}
 
 	public void updateScore(int attempts) {
-		roundScore =  GameSettings.MAX_SCORE - (attempts - 1) * GameSettings.SCORE_PENALTY;
+		roundScore =  GameSettings.MAX_SCORE - (attempts - 1) * GameSettings.SCORE_PENALTY*GameSettings.DEFAULT_DIFFULTY;
 		totalScore += roundScore;
 		
 	}

@@ -18,6 +18,10 @@ public class FlashFrameViewController {
     @FXML
     private Button startMultiButton;
     
+    @FXML
+    private Button puzzlerButton;
+    
+    
     /*
      * the initialize() method:
      * see 
@@ -27,6 +31,7 @@ public class FlashFrameViewController {
 		flashLabel.setText(I18n.getBundle().getString(GameSettings.MSG_GAME_DESCRIPTION_KEY));
 		startButton.setText(I18n.getBundle().getString(GameSettings.MSG_START_GAME_KEY));
 		startMultiButton.setText(I18n.getBundle().getString(GameSettings.MSG_START_MULTI_GAME_KEY));
+
     }
     
     public void setOnStartButtonAction(EventHandler<ActionEvent> handler) {
@@ -35,5 +40,9 @@ public class FlashFrameViewController {
     
     public void setOnStartMultiButtonAction(EventHandler<ActionEvent> handler) {
     	startMultiButton.setOnAction(handler);
+    }
+    
+    public void setOnPuzzlerModeAction(EventHandler<ActionEvent> handler) {
+    	puzzlerButton.setOnAction(handler);
     }
 }

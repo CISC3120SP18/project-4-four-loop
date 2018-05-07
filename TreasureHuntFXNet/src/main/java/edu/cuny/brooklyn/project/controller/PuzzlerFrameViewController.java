@@ -3,6 +3,7 @@ package edu.cuny.brooklyn.project.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.cuny.brooklyn.project.GameSettings;
 import edu.cuny.brooklyn.project.puzzler.Puzzler;
 import edu.cuny.brooklyn.project.puzzler.PuzzlerMaker;
 import javafx.event.ActionEvent;
@@ -39,8 +40,9 @@ public class PuzzlerFrameViewController {
 		return answeringAttempts;
 	}  
 	
-	public void showNewPuzzler() {
-		puzzler = puzzlerMaker.make();
+	public void showNewPuzzler(int type) {
+
+		puzzler = puzzlerMaker.makePuzzler(type);
 		puzzlerLabel.setText(puzzler.getMessage());
 		answeringAttempts = 0;
 	}
