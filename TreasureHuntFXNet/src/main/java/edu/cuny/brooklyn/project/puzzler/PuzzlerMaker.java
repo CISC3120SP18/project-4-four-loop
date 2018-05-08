@@ -1,11 +1,12 @@
 package edu.cuny.brooklyn.project.puzzler;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PuzzlerMaker {
+public class PuzzlerMaker implements Serializable{
 	private final static Logger LOGGER = LoggerFactory.getLogger(PuzzlerMaker.class);
 	
 	public Puzzler makePuzzler(int type) {

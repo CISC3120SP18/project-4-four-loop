@@ -1,11 +1,13 @@
 package edu.cuny.brooklyn.project.treasure;
 
+import java.io.Serializable;
+
 import edu.cuny.brooklyn.project.GameSettings;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
-public abstract class Treasure {
+public abstract class Treasure implements Serializable{
 	/*
 	 * Treasure is bounded in a box
 	 * +---------------------+------------------>X

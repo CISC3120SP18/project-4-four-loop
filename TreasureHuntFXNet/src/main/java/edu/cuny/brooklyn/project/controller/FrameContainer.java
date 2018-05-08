@@ -65,6 +65,9 @@ public class FrameContainer {
 	private GameStatisticsApp statistics;
 	private GameStatisticsApp score;
 
+	//add title
+	public String title;
+	public String clue;
 
 	
 	public FrameContainer(Stage stage, ResourceBundle bundle, StatusReciever statusReciever) throws IOException {
@@ -164,7 +167,7 @@ public class FrameContainer {
 		flashFrameController.setOnPuzzlerModeAction(e -> startGame(PuzzlerSettings.WORD_PUZZLER));
 		puzzlerFrameController.setOnAnswerButtonAction(e -> answerPuzzler());
 		treasureFrameController.setOnButtonTreasureAction(e -> treasureFrameController.doTreasureLocationAction());
-		treasureFrameController.setOnContinueButtonAction(e -> startGame(PuzzlerSettings.MATH_PUZZLER_SQRT));
+		treasureFrameController.setOnContinueButtonAction(e -> {startGame(PuzzlerSettings.MATH_PUZZLER_SQRT);treasureFrameController.clearCanvas();});
 		treasureFrameController.setOnQuitButtonAction(e -> System.exit(0));
 		
 		if (treasureHuntState == null) {
@@ -221,6 +224,7 @@ public class FrameContainer {
 		}
 		
 		if (title_key != null && !title_key.isEmpty()) {
+			title = title_key;
 			stage.setTitle(I18n.getBundle().getString(title_key));
 		}
 	}
@@ -259,4 +263,39 @@ public class FrameContainer {
 		multiSetup.show();
 	
 	}
+	
+	//----------method to show treasure screen----------------
+	public void changeToTreasureScreen(){
+		treasureFrameController.setAttempts(puzzlerFrameController.getAnsweringAttempts());
+		treasureFrameController.startLocatingTreasure(clue);
+		showTreasureScreen();
+	}
+	//--------------------------------------------------------
+	//----------method to show to puzzler screen-----------------
+	public void reShowPuzzlerScreen(){
+		LOGGER.debug("showing puzzler screen.");
+		this.puzzlerFrameController.reflashPuzzlerLabel();
+		showScreenWithFrame(this.puzzlerFrame, GameSettings.MSG_APP_TITLE_PUZZLER_KEY);
+	}
+	//-----------------------------------------
+	
+	//make some getter
+	//-------------------------------------------------------------------------
+	public TreasureFrameViewController getTreasureFrameViewControllerGetter(){
+		return treasureFrameController;
+	}
+	
+	public PuzzlerFrameViewController getPuzzlerFrameViewController(){
+		return puzzlerFrameController;
+	}
+	
+	public void setTreasureFrameViewController(TreasureFrameViewController treasureFrameController){
+		this.treasureFrameController = treasureFrameController;
+	}
+	
+	public void setPuzzlerFrameViewController(PuzzlerFrameViewController puzzlerFrameController){
+		this.puzzlerFrameController = puzzlerFrameController;
+	}
+	//-------------------------------------------------------------------------
 }
+

@@ -1,10 +1,12 @@
 package edu.cuny.brooklyn.project.score;
 
+import java.io.Serializable;
+
 import edu.cuny.brooklyn.project.GameSettings;
 import edu.cuny.brooklyn.project.controller.GameStatisticsApp;
 
 
-public class Scorer {
+public class Scorer implements Serializable{
 
 	private int totalScore;
 	private int roundScore;

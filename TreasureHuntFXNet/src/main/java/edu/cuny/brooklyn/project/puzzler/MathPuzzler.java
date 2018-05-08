@@ -1,6 +1,8 @@
 package edu.cuny.brooklyn.project.puzzler;
 
-public abstract class MathPuzzler extends Puzzler {
+import java.io.Serializable;
+
+public abstract class MathPuzzler extends Puzzler{
 	public MathPuzzler() {
 		this(null, null);
 	}

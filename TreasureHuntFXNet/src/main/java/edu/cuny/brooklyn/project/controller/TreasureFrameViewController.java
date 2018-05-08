@@ -55,7 +55,7 @@ public class TreasureFrameViewController {
     @FXML
     private StackPane canvasHolder;
 
-    
+    //those three variable has to serialization
 	private Scorer scorer;
 	private int puzzlerAttempts;
 	private TreasureField treasureField;
@@ -100,6 +100,10 @@ public class TreasureFrameViewController {
 	public void doTreasureLocationAction() {
 		String xInputText = xPosTreasure.getText();
 		String yInputText = yPosTreasure.getText();
+		//clear textField after user entered the location.
+		xPosTreasure.clear();
+		yPosTreasure.clear();
+		
 		int xInput = -1;
 		int yInput = -1;
 		if (xInputText.isEmpty()) {
@@ -144,8 +148,8 @@ public class TreasureFrameViewController {
 //		new Label(I18n.getBundle().getString(MSG_ROUND_SCORE_KEY)),
 	}
 
-	
-	private void clearCanvas() {
+	//----set this method public---is invokes in frameContainer------
+	public void clearCanvas() {
 		canvas.getGraphicsContext2D().clearRect(0,  0,  canvas.getWidth(), canvas.getHeight());
 	}
 
@@ -199,5 +203,21 @@ public class TreasureFrameViewController {
 		scorer.updateScore(puzzlerAttempts);
 		totalScoreLabel.setText(String.format(GameSettings.SCORE_FORMAT, scorer.getTotalScore()));
 		roundScoreLabel.setText(String.format(GameSettings.SCORE_FORMAT, scorer.getRoundScore()));
+	}
+	//---------------------------
+	public Scorer getScorer(){
+		return scorer;
+	}
+	
+	public void setScorer(Scorer scorer){
+		this.scorer = scorer;
+	}
+	
+	public void setTreasureField(TreasureField treasureField){
+		this.treasureField = treasureField;
+	}
+	
+	public int getAttempts() {
+		return puzzlerAttempts;
 	}
 }

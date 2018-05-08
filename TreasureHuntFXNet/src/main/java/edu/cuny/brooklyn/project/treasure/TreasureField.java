@@ -1,5 +1,6 @@
 package edu.cuny.brooklyn.project.treasure;
 
+import java.io.Serializable;
 import java.util.Random;
 
 import org.slf4j.Logger;
@@ -8,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import edu.cuny.brooklyn.project.GameSettings;
 import javafx.scene.image.Image;
 
-public class TreasureField {
+public class TreasureField implements Serializable{
 	private final static Logger LOGGER = LoggerFactory.getLogger(TreasureField.class);
 	
 	private TreasureGenerator treasureGenerator;
