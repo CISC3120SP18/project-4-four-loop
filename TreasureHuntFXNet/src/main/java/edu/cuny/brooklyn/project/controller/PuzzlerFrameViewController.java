@@ -3,6 +3,7 @@ package edu.cuny.brooklyn.project.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.cuny.brooklyn.project.GameSettings;
 import edu.cuny.brooklyn.project.puzzler.Puzzler;
 import edu.cuny.brooklyn.project.puzzler.PuzzlerMaker;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ public class PuzzlerFrameViewController {
     @FXML
     private TextField puzzlerAnswer;
     
+    //serialize them
 	private PuzzlerMaker puzzlerMaker;
 	private Puzzler puzzler;
 	private int  answeringAttempts;
@@ -39,8 +41,9 @@ public class PuzzlerFrameViewController {
 		return answeringAttempts;
 	}  
 	
-	public void showNewPuzzler() {
-		puzzler = puzzlerMaker.make();
+	public void showNewPuzzler(int type) {
+
+		puzzler = puzzlerMaker.makePuzzler(type);
 		puzzlerLabel.setText(puzzler.getMessage());
 		answeringAttempts = 0;
 	}
@@ -51,6 +54,7 @@ public class PuzzlerFrameViewController {
 	
 	public boolean answerPuzzler() {
 		String answer = puzzlerAnswer.getText();
+		puzzlerAnswer.clear();//clear the textField after user enter the answer.
 		if (answer.isEmpty()) {
 			LOGGER.debug("User's answer to the puzzler is empty!");
 			return false;
@@ -67,6 +71,16 @@ public class PuzzlerFrameViewController {
 		}
 	}
 
+	//--------------------
+	public void reflashPuzzlerLabel(){
+		puzzlerLabel.setText(puzzler.getMessage());
+	}
+	//----------------------
+	
+	//---------------------------------
+	public void setAnsweringAttempts(int attempts){
+		answeringAttempts = attempts;
+	}
 
 	public void setGameStatistics(GameStatisticsApp statistics) {
 		// TODO Auto-generated method stub
@@ -74,5 +88,20 @@ public class PuzzlerFrameViewController {
 	}
 
 
+	public void setPuzzler(Puzzler puzzler){
+		this.puzzler = puzzler;
+	}
 	
+	public Puzzler getPuzzler(){
+		return puzzler;
+	}
+	
+	public void setPuzzlerMaker(PuzzlerMaker puzzlerMaker){
+		this.puzzlerMaker = puzzlerMaker;
+	}
+	
+	public PuzzlerMaker getPuzzlerMaker(){
+		return puzzlerMaker;
+	}
+	//----------------------------------------------
 }

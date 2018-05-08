@@ -18,16 +18,18 @@ public class GameSettings {
 	public final static int DEFAULT_TREASURE_VALUE = 1;
 	
 	// number of types of puzzlers
-	public final static int NUM_TYPES_OF_PUZZLERS = 1;
+	public final static int NUM_TYPES_OF_PUZZLERS = 2;
+	
 	
 	// clue error
 	public static final int DEFAULT_CLUE_ERROR_INCREMENT = 2;
 	// clue error: to make it fun, error can be set proportional to the size of the treasure
 	public static final double DEFAULT_CLUE_RELATIVE_ERROR_INCREMENT = 1.;
 	
+	
 	// score computation
-	public static final int MAX_SCORE = 100;
-	public static final int SCORE_PENALTY = 10;
+	public static int MAX_SCORE = 100;
+	public static int SCORE_PENALTY = 10;
 
 	// UI Settings
 	public final static String APP_ICON_IMAGE = "icon/icon.png";
@@ -84,4 +86,5 @@ public class GameSettings {
 	public static final String USN_DIALOG_TITLE_TEXT = "usnTitle";
 	public static final String USN_DIALOG_HEADER_TEXT = "usnHeader";
 	public static final String USN_DIALOG_CONTENT_TEXT = "usnContext";
+	public static int DEFAULT_DIFFULTY = 2;
 }

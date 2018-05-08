@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import edu.cuny.brooklyn.project.GameSettings;
 import edu.cuny.brooklyn.project.controller.DecisionWrapper.UserDecision;
 import edu.cuny.brooklyn.project.message.I18n;
 import edu.cuny.brooklyn.project.net.StatusBroadcaster;
@@ -82,7 +83,7 @@ public class FrameViewController {
 				break;
 			case SaveGame:
 				try {
-					treasureHuntState.saveTheGame();
+					treasureHuntState.saveTheGame(frameContainer);
 					LOGGER.debug(String.format("Saved the game at %s.", treasureHuntState.getTheGameFilePath()));
 					statusBroadcaster.close();
 					Platform.exit();
@@ -112,12 +113,38 @@ public class FrameViewController {
 
 	@FXML
 	void openGame(ActionEvent event) {
-		LOGGER.debug("openning a saved game: not implemented yet");
+		try{
+			treasureHuntState.openTheGame(frameContainer);
+			if(frameContainer.title.equals(GameSettings.MSG_APP_TITLE_FLASH_KEY))
+				frameContainer.showFlashScreen(false);
+			else if(frameContainer.title.equals(GameSettings.MSG_APP_TITLE_PUZZLER_KEY))
+				frameContainer.reShowPuzzlerScreen();
+			else if(frameContainer.title.equals(GameSettings.MSG_APP_TITLE_TREASURE_HUNT_KEY))
+				frameContainer.changeToTreasureScreen();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		finally{
+			LOGGER.debug("open the game sucessful.");
+		}
 	}
 
 	@FXML
 	void saveTheGame(ActionEvent event) {
-		LOGGER.debug("saving the game: not implemented yet");
+		try {
+			treasureHuntState.saveTheGame(frameContainer);
+			LOGGER.debug(String.format("Saved the game at %s.", treasureHuntState.getTheGameFilePath()));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			LOGGER.error(String.format("Cannot found the file %s while saving the game.",
+					treasureHuntState.getTheGameFilePath()), e);
+			NotificationHelper.showFileNotFound(treasureHuntState.getTheGameFilePath());
+		} catch (IOException e) {
+			e.printStackTrace();
+			LOGGER.error(String.format("Cannot write to the file %s while saving the game.",
+					treasureHuntState.getTheGameFilePath()), e);
+			NotificationHelper.showWritingError(treasureHuntState.getTheGameFilePath());
+		}
 	}
 
 	private void initializeI18n() throws IOException, URISyntaxException {

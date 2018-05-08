@@ -1,6 +1,8 @@
 package edu.cuny.brooklyn.project.puzzler;
 
-public abstract class Puzzler {
+import java.io.Serializable;
+
+public abstract class Puzzler implements Serializable{
 	private String message;
 	private String answer;
 	private int type;

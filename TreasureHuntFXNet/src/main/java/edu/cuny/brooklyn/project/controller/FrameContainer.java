@@ -15,6 +15,7 @@ import edu.cuny.brooklyn.project.message.I18n;
 import edu.cuny.brooklyn.project.net.StatusBroadcaster;
 import edu.cuny.brooklyn.project.net.StatusMessage;
 import edu.cuny.brooklyn.project.net.StatusReciever;
+import edu.cuny.brooklyn.project.puzzler.PuzzlerSettings;
 import edu.cuny.brooklyn.project.state.TreasureHuntState;
 import edu.cuny.brooklyn.project.treasure.TreasureGenerator;
 import javafx.fxml.FXMLLoader;
@@ -62,6 +63,11 @@ public class FrameContainer {
 	private StatusReciever statusReciever;
 	
 	private GameStatisticsApp statistics;
+	private GameStatisticsApp score;
+
+	//add title
+	public String title;
+	public String clue;
 
 	
 	public FrameContainer(Stage stage, ResourceBundle bundle, StatusReciever statusReciever) throws IOException {
@@ -90,6 +96,7 @@ public class FrameContainer {
 			throw new IllegalArgumentException("StatusBroadcaster object must not be null.");
 		}
 		this.statistics = statistics;
+		
 	}
 	
 	public void showFlashScreen() {
@@ -157,14 +164,15 @@ public class FrameContainer {
 		recievingThread.setDaemon(true);
 		recievingThread.start();
 		
-		statistics = new GameStatisticsApp();
-		puzzlerFrameController.setGameStatistics(statistics);
+		//statistics = new GameStatisticsApp();
+		//puzzlerFrameController.setGameStatistics(statistics);
 
-		flashFrameController.setOnStartButtonAction(e -> startGame());
+		flashFrameController.setOnStartButtonAction(e -> startGame(PuzzlerSettings.MATH_PUZZLER_SQRT));
 		flashFrameController.setOnStartMultiButtonAction(e -> startMultiplayerGame());
+		flashFrameController.setOnPuzzlerModeAction(e -> startGame(PuzzlerSettings.WORD_PUZZLER));
 		puzzlerFrameController.setOnAnswerButtonAction(e -> answerPuzzler());
 		treasureFrameController.setOnButtonTreasureAction(e -> treasureFrameController.doTreasureLocationAction());
-		treasureFrameController.setOnContinueButtonAction(e -> startGame());
+		treasureFrameController.setOnContinueButtonAction(e -> {startGame(PuzzlerSettings.MATH_PUZZLER_SQRT);treasureFrameController.clearCanvas();});
 		treasureFrameController.setOnQuitButtonAction(e -> System.exit(0));
 		
 		if (treasureHuntState == null) {
@@ -190,11 +198,11 @@ public class FrameContainer {
 	}
 	
 	
-	private void showPuzzlerScreen() {
+	private void showPuzzlerScreen(int difficultyLevel) {
 		LOGGER.debug("showing puzzler screen.");
 		treasureFrameController.getTreasureField().placeTreasure();
 		LOGGER.debug("placed a treasure");
-		this.puzzlerFrameController.showNewPuzzler();
+		this.puzzlerFrameController.showNewPuzzler(difficultyLevel);
 		showScreenWithFrame(this.puzzlerFrame, GameSettings.MSG_APP_TITLE_PUZZLER_KEY);
 	}
 	
@@ -222,6 +230,7 @@ public class FrameContainer {
 		}
 		
 		if (title_key != null && !title_key.isEmpty()) {
+			title = title_key;
 			stage.setTitle(I18n.getBundle().getString(title_key));
 		}
 	}
@@ -240,8 +249,17 @@ public class FrameContainer {
 	}
 
 
-	private void startGame() {
-		showPuzzlerScreen();
+	private void startGame(int difficultyLevel) {
+		GameSettings.MAX_SCORE = 100;
+		GameSettings.SCORE_PENALTY = 10;
+		showPuzzlerScreen(difficultyLevel);
+		mainViewController.disableLocaleChange();
+	}
+	
+	private void NextRound() {
+		GameSettings.MAX_SCORE = 100;
+		GameSettings.SCORE_PENALTY = 10;
+		showPuzzlerScreen(PuzzlerSettings.WORD_PUZZLER);
 		mainViewController.disableLocaleChange();
 	}
 	
@@ -249,4 +267,39 @@ public class FrameContainer {
 		multiSetup.setScene(multiPopup);
 		multiSetup.show();
 	}
+	
+	//----------method to show treasure screen----------------
+	public void changeToTreasureScreen(){
+		treasureFrameController.setAttempts(puzzlerFrameController.getAnsweringAttempts());
+		treasureFrameController.startLocatingTreasure(clue);
+		showTreasureScreen();
+	}
+	//--------------------------------------------------------
+	//----------method to show to puzzler screen-----------------
+	public void reShowPuzzlerScreen(){
+		LOGGER.debug("showing puzzler screen.");
+		this.puzzlerFrameController.reflashPuzzlerLabel();
+		showScreenWithFrame(this.puzzlerFrame, GameSettings.MSG_APP_TITLE_PUZZLER_KEY);
+	}
+	//-----------------------------------------
+	
+	//make some getter
+	//-------------------------------------------------------------------------
+	public TreasureFrameViewController getTreasureFrameViewControllerGetter(){
+		return treasureFrameController;
+	}
+	
+	public PuzzlerFrameViewController getPuzzlerFrameViewController(){
+		return puzzlerFrameController;
+	}
+	
+	public void setTreasureFrameViewController(TreasureFrameViewController treasureFrameController){
+		this.treasureFrameController = treasureFrameController;
+	}
+	
+	public void setPuzzlerFrameViewController(PuzzlerFrameViewController puzzlerFrameController){
+		this.puzzlerFrameController = puzzlerFrameController;
+	}
+	//-------------------------------------------------------------------------
 }
+
