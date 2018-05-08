@@ -37,16 +37,14 @@ public class StatusReciever extends Task<ObservableList<StatusMessage>>{
 	private final static String ADDRESS = "0.0.0.0";
 
 	private final static int BUFFER_SIZE = 1024;
-
+	
+	private String username;
+	public void setUsername(String usn) { username = usn; }
+	
 	@Override
 	protected ObservableList<StatusMessage> call() throws Exception {
 		SocketAddress address = null;
-		//try {
 		address = new InetSocketAddress(InetAddress.getByName(ADDRESS), PORT);
-		//} catch (UnknownHostException e) {
-			//LOGGER.error(String.format("Address or name %s is not a valid address or name", ADDRESS), e);
-			//System.exit(-1);
-		//}
 
 		try (DatagramSocket socket = new DatagramSocket(address)) {
 			byte buf[] = new byte[BUFFER_SIZE];
@@ -57,6 +55,7 @@ public class StatusReciever extends Task<ObservableList<StatusMessage>>{
 				ByteArrayInputStream baos = new ByteArrayInputStream(packet.getData());
 				ObjectInputStream oos = new ObjectInputStream(baos);
 				StatusMessage msg = (StatusMessage) oos.readObject();
+				if (msg.getName().equals(username)) continue; //filter out current user:
 				msg.setUdpPort(PORT);
 				Platform.runLater(() -> partialResults.get().add(msg));
 				LOGGER.info(String.format("Local(%d@%s) <<<< Remote (%d@%s): %s", socket.getLocalPort(),

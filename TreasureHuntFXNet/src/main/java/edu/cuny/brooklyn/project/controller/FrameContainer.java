@@ -1,6 +1,7 @@
 package edu.cuny.brooklyn.project.controller;
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -34,9 +35,8 @@ public class FrameContainer {
 	private Thread recievingThread;
 	private TextInputDialog nameDialog;
 
-	private Stage stage;
-	
-	private Scene scene;
+	private Stage stage, multiSetup;
+	private Scene scene, multiPopup;
 	
 	private Parent mainView;
 	private FrameViewController mainViewController;
@@ -90,8 +90,6 @@ public class FrameContainer {
 			throw new IllegalArgumentException("StatusBroadcaster object must not be null.");
 		}
 		this.statistics = statistics;
-		
-		mainViewController.setStatusBroadcaster(this.statusBroadcaster);
 	}
 	
 	public void showFlashScreen() {
@@ -119,11 +117,14 @@ public class FrameContainer {
 	}
 	
 	private void initializeContainer(Stage stage, ResourceBundle bundle) throws IOException {
-
+		
 		
 		this.stage = stage;
+		multiSetup = new Stage();
+		multiSetup.initModality(Modality.APPLICATION_MODAL);
+		multiSetup.setTitle(I18n.getBundle().getString(GameSettings.MSG_APP_TITLE_MULTIPLAYER_LIST_KEY));
 		
-		nameDialog = new TextInputDialog("Johnny Appleseed");
+		nameDialog = new TextInputDialog();
 		nameDialog.setTitle(I18n.getBundle().getString(GameSettings.USN_DIALOG_TITLE_TEXT));
 		nameDialog.setHeaderText(I18n.getBundle().getString(GameSettings.USN_DIALOG_HEADER_TEXT));
 		nameDialog.setContentText(I18n.getBundle().getString(GameSettings.USN_DIALOG_CONTENT_TEXT));
@@ -148,6 +149,8 @@ public class FrameContainer {
 		fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource(GameSettings.MULTIPLAYER_VIEW_PATH), bundle);
 		multiplayerFrame = fxmlLoader.load();
 		multiplayerViewController = fxmlLoader.getController();
+		
+		multiPopup = new Scene(this.multiplayerFrame);
 		
 		recievingThread = new Thread(statusReciever);
 		statusReciever.getPartialResults().addListener((Change<? extends StatusMessage> c) -> multiplayerViewController.handleNewPlayer(c));
@@ -215,6 +218,7 @@ public class FrameContainer {
 		if (view == this.flashFrame && FIRST_RUN) {
 			FIRST_RUN = false;
 			while(!showUsernamePopup());
+			statusBroadcaster.start();
 		}
 		
 		if (title_key != null && !title_key.isEmpty()) {
@@ -223,9 +227,14 @@ public class FrameContainer {
 	}
 	
 	private boolean showUsernamePopup() {
-		if (nameDialog.showAndWait().isPresent()) {
-			statusBroadcaster.setUserName(nameDialog.getContentText());
-			return true;
+		Optional<String>  usn = nameDialog.showAndWait();
+		if (usn.isPresent()) {
+			String name = usn.get();
+			if (!name.isEmpty() && name.length() > 2) {
+				statusBroadcaster.setUserName(name);
+				statusReciever.setUsername(name);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -237,14 +246,7 @@ public class FrameContainer {
 	}
 	
 	private void startMultiplayerGame() {
-		final Stage multiSetup = new Stage();
-		Scene multiPopup = new Scene(this.multiplayerFrame);
-		
-		multiSetup.initModality(Modality.APPLICATION_MODAL);
-		multiSetup.initOwner(stage);
-		multiSetup.setTitle(GameSettings.MSG_APP_TITLE_MULTIPLAYER_LIST_KEY);
 		multiSetup.setScene(multiPopup);
 		multiSetup.show();
-	
 	}
 }

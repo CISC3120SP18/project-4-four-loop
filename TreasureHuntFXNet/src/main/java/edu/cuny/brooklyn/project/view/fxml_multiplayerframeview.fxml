@@ -1,36 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cuny.brooklyn.project.controller.MultiplayerViewController">
-  <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
-      <children>
-            <VBox fx:id="playerContainer" layoutX="3.0" prefHeight="368.0" prefWidth="640.0">
-               <children>
-                  <HBox prefHeight="39.0" prefWidth="659.0">
-                     <children>
-                        <Label fx:id="usernameLabel" prefHeight="42.0" prefWidth="98.0" text="Username" underline="true">
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="tcpLabel" prefHeight="37.0" prefWidth="167.0" text="Address (IP:TCP)" underline="true">
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="udpLabel" prefHeight="49.0" prefWidth="116.0" text="UDP Port" underline="true" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-      </children>
-    </AnchorPane>
-  </children>
-</VBox>
+<TableView maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="edu.cuny.brooklyn.project.controller.MultiplayerViewController">
+  <columns>
+    <TableColumn fx:id="usernames" prefWidth="150.0" text="Username" />
+    <TableColumn fx:id="tcpAddresses" minWidth="0.0" prefWidth="183.0" text="Address (IP:TCP)" />
+      <TableColumn fx:id="udpPorts" prefWidth="128.0" text="UDP Port" />
+      <TableColumn fx:id="btnContainer" prefWidth="138.0" text="Connect (TODO)" />
+  </columns>
+</TableView>

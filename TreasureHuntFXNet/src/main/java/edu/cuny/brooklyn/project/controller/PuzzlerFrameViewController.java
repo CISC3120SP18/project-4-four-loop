@@ -68,5 +68,11 @@ public class PuzzlerFrameViewController {
 	}
 
 
+	public void setGameStatistics(GameStatisticsApp statistics) {
+		// TODO Auto-generated method stub
+		this.statistics = statistics;
+	}
+
+
 	
 }
