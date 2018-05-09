@@ -311,6 +311,7 @@ public class FrameContainer {
 	}
 	
 	public void QuitandSaveStatistics(){
+		statisticsViewController.showAll();
 		showStatisticsPane();
 		treasureHuntState.saveStatistics();
 	}

@@ -175,6 +175,7 @@ public class TreasureFrameViewController {
 			doneGuessing();
 			showTreasure();
 			updateScore();
+			statistics.addRound();
 			//----update attempts of locate treasure, and score--------------
 			statistics.updateAttemptTreasure(locateAttempts);
 			statistics.updateScore(scorer.getRoundScore(), scorer.getTotalScore());

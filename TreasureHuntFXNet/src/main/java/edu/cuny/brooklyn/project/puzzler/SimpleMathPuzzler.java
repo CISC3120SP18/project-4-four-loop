@@ -25,7 +25,7 @@ public class SimpleMathPuzzler extends MathPuzzler {
 		}
         int leftNum = minNumber + rng.nextInt(maxNumber - minNumber + 1),
             rightNum = minNumber + rng.nextInt(maxNumber - minNumber + 1),
-            operand = rng.nextInt(4);
+            operand = rng.nextInt(2);
         String message;
 
         switch (operand) {
