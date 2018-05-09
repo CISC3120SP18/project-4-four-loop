@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
@@ -11,22 +16,16 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 
-<GridPane hgap="5.0" maxHeight="Infinity" maxWidth="Infinity"
-	vgap="5.0" xmlns="http://javafx.com/javafx/8.0.141"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="edu.cuny.brooklyn.project.controller.TreasureFrameViewController">
+<GridPane hgap="5.0" maxHeight="Infinity" maxWidth="Infinity" vgap="5.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.cuny.brooklyn.project.controller.TreasureFrameViewController">
 	<rowConstraints>
 		<RowConstraints minHeight="10.0" />
-		<RowConstraints minHeight="10.0" prefHeight="30.0"/>
-		<RowConstraints minHeight="10.0" prefHeight="300.0"
-			vgrow="SOMETIMES" />
+		<RowConstraints minHeight="10.0" prefHeight="30.0" />
+		<RowConstraints minHeight="10.0" prefHeight="300.0" vgrow="SOMETIMES" />
 		<RowConstraints minHeight="10.0" />
 	</rowConstraints>
 	<columnConstraints>
-		<ColumnConstraints hgrow="SOMETIMES"
-			minWidth="200.0" prefWidth="200.0" />
-		<ColumnConstraints minWidth="200.0"
-			prefWidth="300.0" />
+		<ColumnConstraints hgrow="SOMETIMES" minWidth="200.0" prefWidth="200.0" />
+		<ColumnConstraints minWidth="200.0" prefWidth="300.0" />
 		<ColumnConstraints />
 		<ColumnConstraints />
 	</columnConstraints>
@@ -34,24 +33,19 @@
 		<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
 	</padding>
 	<children>
-		<HBox prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2"
-			GridPane.halignment="CENTER" GridPane.rowIndex="3">
+		<HBox prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3">
 			<children>
 				<TextField fx:id="xPosTreasure" />
 				<TextField fx:id="yPosTreasure" />
-				<Button fx:id="buttonTreasure" mnemonicParsing="false"
-					text="%locateTreasure" />
-				<Button fx:id="buttonContinue" mnemonicParsing="false"
-					text="%continueGame" />
-				<Button fx:id="buttonQuit" mnemonicParsing="false"
-					text="%quitGame" />	
+				<Button fx:id="buttonTreasure" mnemonicParsing="false" text="%locateTreasure" />
+				<Button fx:id="buttonContinue" mnemonicParsing="false" text="%continueGame" />
+				<Button fx:id="buttonQuit" mnemonicParsing="false" text="%quitGame" />	
 			</children>
 			<GridPane.margin>
 				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 			</GridPane.margin>
 		</HBox>
-		<HBox spacing="10.0" GridPane.columnSpan="2"
-			GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+		<HBox spacing="10.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
 			<children>
 				<Label text="%totalScore" />
 				<Label fx:id="totalScoreLabel" text="Label" />
@@ -62,8 +56,7 @@
 				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 			</GridPane.margin>
 		</HBox>
-		<HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0"
-			GridPane.columnSpan="2" GridPane.rowIndex="1">
+		<HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnSpan="2" GridPane.rowIndex="1">
 			<children>
 				<Label fx:id="clueLabel" text="Label" />
 				<Label fx:id="responseLabel" text="Label" />
@@ -72,11 +65,9 @@
 				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
 			</GridPane.margin>
 		</HBox>
-		<StackPane fx:id="canvasHolder" maxHeight="Infinity" maxWidth="Infinity"
-			style="-fx-background-color: white;" GridPane.columnSpan="2"
-			GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+		<StackPane fx:id="canvasHolder" maxHeight="Infinity" maxWidth="Infinity" style="-fx-background-color: white;" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
 			<children>
-				<Canvas fx:id="canvas" height="300.0" width="400.0" />
+				<Canvas fx:id="canvas" height="300.0" width="505.0" />
 			</children>
 		</StackPane>
 	</children>

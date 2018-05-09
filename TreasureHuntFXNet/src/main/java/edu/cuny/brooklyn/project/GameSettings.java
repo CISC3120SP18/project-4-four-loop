@@ -1,5 +1,7 @@
 package edu.cuny.brooklyn.project;
 
+import edu.cuny.brooklyn.project.message.I18n;
+import edu.cuny.brooklyn.project.validator.Validator;
 import javafx.geometry.Insets;
 import javafx.scene.paint.Color;
 
@@ -38,6 +40,9 @@ public class GameSettings {
 	public final static double H_SPACING = 20.;
 	public final static double V_SPACING = 20.;
 	
+	
+	public final static double NEW_CANVAS_WIDTH = 795.0;
+	public final static double NEW_CANVAS_HEIGHT = 472.0;
 	
 	public final static double CANVAS_WIDTH = 600;
 	public final static double CANVAS_HEIGHT = 400;
@@ -90,4 +95,43 @@ public class GameSettings {
 	public static int DEFAULT_DIFFULTY = 2;
 	
 	public final static String MSG_APP_TITLE_STATISTICS_LIST_KEY = "appTitleStatisticsList";
+	
+//	public static final String DIFF_EASY = I18n.getBundle().getString("diffEasy");
+//	public static final String DIFF_NORMAL = I18n.getBundle().getString("diffNormal");
+//	public static final String DIFF_HARD = I18n.getBundle().getString("diffHard");
+	public static final String DIFF_EASY = "diffEasy";
+	public static final String DIFF_NORMAL = "diffNormal";
+	public static final String DIFF_HARD = "diffHard";
+	
+	// Settings
+	public final static String DEFAULT_DIFFICULTY = DIFF_NORMAL;
+	public final static String DEFAULT_TEXT_COLOR = "#000000";
+	private static String CURRENT_DIFFICULTY;
+	private static String CURRENT_TEXT_COLOR;
+
+	public static void setDifficulty(String diff) {
+		if (!Validator.isValidDifficulty(diff) || CURRENT_DIFFICULTY == diff) return;
+		CURRENT_DIFFICULTY = diff;
+	}
+
+	public static String getDifficulty() {
+		if (CURRENT_DIFFICULTY == null) return DEFAULT_DIFFICULTY;
+		return CURRENT_DIFFICULTY;
+	}
+
+	public static void setTextColor(String hex) {
+		CURRENT_TEXT_COLOR = hex;
+	}
+
+	public static String getTextColor() {
+		if (CURRENT_TEXT_COLOR == null) return DEFAULT_TEXT_COLOR;
+		return CURRENT_TEXT_COLOR;
+	}
+
+	public static String colorToHex(Color color) {
+		return String.format( "#%02X%02X%02X",
+            (int)( color.getRed() * 255 ),
+            (int)( color.getGreen() * 255 ),
+            (int)( color.getBlue() * 255 ) );
+	}
 }

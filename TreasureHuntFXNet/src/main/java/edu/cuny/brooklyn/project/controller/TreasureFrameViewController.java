@@ -7,17 +7,22 @@ import edu.cuny.brooklyn.project.GameSettings;
 import edu.cuny.brooklyn.project.message.I18n;
 import edu.cuny.brooklyn.project.score.Scorer;
 import edu.cuny.brooklyn.project.treasure.TreasureField;
+import edu.cuny.brooklyn.project.validator.Validator;
 import javafx.beans.InvalidationListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class TreasureFrameViewController {
 	private final static Logger LOGGER = LoggerFactory.getLogger(TreasureFrameViewController.class);
@@ -63,6 +68,7 @@ public class TreasureFrameViewController {
 	private GameStatistics statistics;
 	private int locateAttempts;
 	
+	private Circle circle;
 	
 	// for resizing
 	private InvalidationListener resizeListener = o -> redrawTreasure();
@@ -77,6 +83,21 @@ public class TreasureFrameViewController {
 		
 		canvas.widthProperty().bind(canvasHolder.widthProperty().subtract(20));
 		canvas.heightProperty().bind(canvasHolder.heightProperty().subtract(20));
+		
+		//------try let mouse click on the panel to choose the coordinate
+		//------and the coordinate show on the two TextField-------
+		canvasHolder.setOnMouseReleased(e ->{
+			int xPos = (int)(e.getX()/(canvasHolder.getWidth())*(double)treasureField.getFieldWidth());
+			int yPos = (int)(e.getY()/(canvasHolder.getHeight())*(double)treasureField.getFieldHeight());
+			xPosTreasure.setText(Integer.toString(xPos));
+			yPosTreasure.setText(Integer.toString(yPos));
+		});
+		
+		circle = new Circle(3);
+		circle.setFill(Color.RED);
+		canvasHolder.getChildren().add(circle);
+		//------------------------------------------------
+		
 	}
 	
 	
@@ -95,6 +116,24 @@ public class TreasureFrameViewController {
 
 		canvas.widthProperty().removeListener(resizeListener);
 		canvas.heightProperty().removeListener(resizeListener);
+		//-----------display a circle that indicate the coordinate by clue given---
+		displayClueByCircle(clue);
+	}
+	
+	//----------get xpos, ypos, and clueError from TreasureClue----
+	//----------the radius of circle adjust by ClueError.----------
+	public void displayClueByCircle(String clue){
+		double canvasH=GameSettings.NEW_CANVAS_HEIGHT;
+		double canvasW=GameSettings.NEW_CANVAS_WIDTH;
+
+		int Xpos = TreasureClue.getX();
+		int Ypos = TreasureClue.getY();
+		double y = -canvasH/2+((double)Ypos)/(double)treasureField.getFieldHeight()*canvasH;
+		double x = -canvasW/2+((double)Xpos)/(double)treasureField.getFieldWidth()*canvasW;
+		int radius = TreasureClue.getClueError();
+		circle.setRadius(radius/3);
+		circle.setTranslateX(x);
+		circle.setTranslateY(y);
 	}
 
 	
@@ -105,6 +144,7 @@ public class TreasureFrameViewController {
 		xPosTreasure.clear();
 		yPosTreasure.clear();
 		locateAttempts++;
+		Validator validator = new Validator();
 		
 		int xInput = -1;
 		int yInput = -1;
@@ -115,6 +155,18 @@ public class TreasureFrameViewController {
 		if (yInputText.isEmpty()) {
 			LOGGER.debug("User hasn't guessed Y position of the treasure.");
 		}
+		//---------validate the input-------------------------------
+		if(!validator.isValidCoordinates(xInputText,yInputText)){
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Warning");
+			alert.setHeaderText(null);
+			alert.setContentText("Invalid coordinates input, try again");
+			alert.showAndWait();
+			xPosTreasure.clear();
+			yPosTreasure.clear();
+			return;
+		}
+		
 		xInput = Integer.parseInt(xInputText);
 		yInput = Integer.parseInt(yInputText);
 		
@@ -125,8 +177,6 @@ public class TreasureFrameViewController {
 			updateScore();
 			//----update attempts of locate treasure, and score--------------
 			statistics.updateAttemptTreasure(locateAttempts);
-			statistics.updateScore(scorer.getRoundScore(), scorer.getTotalScore());
-			
 			statistics.updateScore(scorer.getRoundScore(), scorer.getTotalScore());
 		} else {
 			LOGGER.debug("No treasure at location (" + xInput + "," + yInput + ")");

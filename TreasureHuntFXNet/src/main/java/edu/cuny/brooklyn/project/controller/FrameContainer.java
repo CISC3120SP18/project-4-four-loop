@@ -188,9 +188,6 @@ public class FrameContainer {
 		statusReciever.getPartialResults().addListener((Change<? extends StatusMessage> c) -> multiplayerViewController.handleNewPlayer(c));
 		recievingThread.setDaemon(true);
 		recievingThread.start();
-		
-		//statistics = new GameStatisticsApp();
-		//puzzlerFrameController.setGameStatistics(statistics);
 
 		flashFrameController.setOnStartButtonAction(e -> startGame(PuzzlerSettings.MATH_PUZZLER_SQRT));
 		flashFrameController.setOnStartMultiButtonAction(e -> startMultiplayerGame());
@@ -288,8 +285,8 @@ public class FrameContainer {
 
 
 	private void startGame(int difficultyLevel) {
-		GameSettings.MAX_SCORE = 100;
-		GameSettings.SCORE_PENALTY = 10;
+//		GameSettings.MAX_SCORE = 100;
+//		GameSettings.SCORE_PENALTY = 10;
 		showPuzzlerScreen(difficultyLevel);
 		mainViewController.disableLocaleChange();
 	}
@@ -308,16 +305,14 @@ public class FrameContainer {
 	
 	//---------show the statistics frame----------------------
 	private void showStatisticsPane(){
+		statisticsViewController.showAll();
 		statisticsStage.setScene(statisticsScene);
 		statisticsStage.showAndWait();
-		statisticsViewController.showAll();
 	}
 	
 	public void QuitandSaveStatistics(){
-		//statisticsViewController.showAll();
 		showStatisticsPane();
 		treasureHuntState.saveStatistics();
-//		showScreenWithFrame(this.statisticsFrame, GameSettings.MSG_APP_TITLE_STATISTICS_LIST_KEY);
 	}
 	
 	public void passStatisticsToTreasureHuntState(){

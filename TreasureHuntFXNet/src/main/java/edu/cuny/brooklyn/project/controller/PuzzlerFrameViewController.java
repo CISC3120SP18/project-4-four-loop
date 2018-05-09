@@ -4,14 +4,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.cuny.brooklyn.project.GameSettings;
+import edu.cuny.brooklyn.project.puzzler.MathPuzzler;
 import edu.cuny.brooklyn.project.puzzler.Puzzler;
 import edu.cuny.brooklyn.project.puzzler.PuzzlerMaker;
+import edu.cuny.brooklyn.project.validator.Validator;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class PuzzlerFrameViewController {
 	private final static Logger LOGGER = LoggerFactory.getLogger(PuzzlerFrameViewController.class);
@@ -54,12 +58,22 @@ public class PuzzlerFrameViewController {
 	
 	public boolean answerPuzzler() {
 		String answer = puzzlerAnswer.getText();
+		Validator validator = new Validator();
+		Alert alert = new Alert(AlertType.INFORMATION);
 		puzzlerAnswer.clear();//clear the textField after user enter the answer.
 		if (answer.isEmpty()) {
 			LOGGER.debug("User's answer to the puzzler is empty!");
 			return false;
 		}
-		
+		if(puzzler instanceof MathPuzzler)
+			if(!validator.isValidFloatingAnswer(answer)){
+				alert.setTitle("warning");
+				alert.setHeaderText(null);
+				alert.setContentText("invalid input, try again");
+				alert.showAndWait();
+				puzzlerAnswer.clear();
+				return false;
+			}
 		answeringAttempts ++;
 		
 		if (!puzzler.isCorrect(answer)) {
