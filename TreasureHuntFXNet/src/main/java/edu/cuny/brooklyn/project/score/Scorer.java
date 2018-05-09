@@ -3,7 +3,7 @@ package edu.cuny.brooklyn.project.score;
 import java.io.Serializable;
 
 import edu.cuny.brooklyn.project.GameSettings;
-import edu.cuny.brooklyn.project.controller.GameStatisticsApp;
+import edu.cuny.brooklyn.project.controller.GameStatistics;
 
 
 public class Scorer implements Serializable{

@@ -36,8 +36,8 @@ public class FrameContainer {
 	private Thread recievingThread;
 	private TextInputDialog nameDialog;
 
-	private Stage stage, multiSetup;
-	private Scene scene, multiPopup;
+	private Stage stage, multiSetup, statisticsStage;
+	private Scene scene, multiPopup, statisticsScene;
 	
 	private Parent mainView;
 	private FrameViewController mainViewController;
@@ -54,6 +54,9 @@ public class FrameContainer {
 	private Parent multiplayerFrame;
 	private MultiplayerViewController multiplayerViewController;
 	
+	private Parent statisticsFrame;
+	private StatisticsViewController statisticsViewController;
+	
 	private TreasureGenerator treasureGenerator;
 	
 	private TreasureHuntState treasureHuntState;
@@ -62,8 +65,7 @@ public class FrameContainer {
 
 	private StatusReciever statusReciever;
 	
-	private GameStatisticsApp statistics;
-	private GameStatisticsApp score;
+	private GameStatistics statistics;
 
 	//add title
 	public String title;
@@ -91,13 +93,14 @@ public class FrameContainer {
 	}
 	
 
-	public void setGameStatistics (GameStatisticsApp statistics) {
+	public void setGameStatistics (GameStatistics statistics) {
 		if (statistics == null) {
 			throw new IllegalArgumentException("StatusBroadcaster object must not be null.");
 		}
 		this.statistics = statistics;
 		
 	}
+	
 	
 	public void showFlashScreen() {
 		showFlashScreen(false);
@@ -112,7 +115,7 @@ public class FrameContainer {
 	private void answerPuzzler() {
 		LOGGER.debug("solving puzzler.");
 		if (puzzlerFrameController.answerPuzzler()) {
-			String clue = TreasureClue.getClue(treasureFrameController.getTreasureField().getTreasureXLeft(),
+			clue = TreasureClue.getClue(treasureFrameController.getTreasureField().getTreasureXLeft(),
 					treasureFrameController.getTreasureField().getTreasureYTop(),
 					treasureFrameController.getTreasureField().getTreasureBoundingBoxWidth(),
 					treasureFrameController.getTreasureField().getTreasureBoundingBoxLength(),
@@ -124,12 +127,27 @@ public class FrameContainer {
 	}
 	
 	private void initializeContainer(Stage stage, ResourceBundle bundle) throws IOException {
+		if (treasureHuntState == null) {
+			treasureGenerator = new TreasureGenerator();
+		}
 		
+		if (treasureHuntState == null) {
+			treasureHuntState = new TreasureHuntState();
+		}
+		if(treasureHuntState.readStatistics()!=null)
+			statistics = treasureHuntState.readStatistics();
+		else
+			statistics = new GameStatistics();
+		
+		passStatisticsToTreasureHuntState();
 		
 		this.stage = stage;
 		multiSetup = new Stage();
 		multiSetup.initModality(Modality.APPLICATION_MODAL);
 		multiSetup.setTitle(I18n.getBundle().getString(GameSettings.MSG_APP_TITLE_MULTIPLAYER_LIST_KEY));
+		
+		statisticsStage = new Stage();
+		
 		
 		nameDialog = new TextInputDialog();
 		nameDialog.setTitle(I18n.getBundle().getString(GameSettings.USN_DIALOG_TITLE_TEXT));
@@ -144,6 +162,7 @@ public class FrameContainer {
 		fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource(GameSettings.TREASURE_VIEW_PATH), bundle);
 		treasureFrame = fxmlLoader.load();
 		treasureFrameController = fxmlLoader.getController();
+		treasureFrameController.setStatistics(statistics);
 		
 		fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource(GameSettings.PUZZLER_VIEW_PATH), bundle);
 		puzzlerFrame = fxmlLoader.load();
@@ -157,7 +176,13 @@ public class FrameContainer {
 		multiplayerFrame = fxmlLoader.load();
 		multiplayerViewController = fxmlLoader.getController();
 		
+		fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource(GameSettings.STATISTICS_VIEW_PATH),bundle);
+		statisticsFrame = fxmlLoader.load();
+		statisticsViewController = fxmlLoader.getController();
+		statisticsViewController.setStatistics(statistics);
+		
 		multiPopup = new Scene(this.multiplayerFrame);
+		statisticsScene = new Scene(this.statisticsFrame);
 		
 		recievingThread = new Thread(statusReciever);
 		statusReciever.getPartialResults().addListener((Change<? extends StatusMessage> c) -> multiplayerViewController.handleNewPlayer(c));
@@ -173,16 +198,24 @@ public class FrameContainer {
 		puzzlerFrameController.setOnAnswerButtonAction(e -> answerPuzzler());
 		treasureFrameController.setOnButtonTreasureAction(e -> treasureFrameController.doTreasureLocationAction());
 		treasureFrameController.setOnContinueButtonAction(e -> {startGame(PuzzlerSettings.MATH_PUZZLER_SQRT);treasureFrameController.clearCanvas();});
-		treasureFrameController.setOnQuitButtonAction(e -> System.exit(0));
+		treasureFrameController.setOnQuitButtonAction(e -> {QuitandSaveStatistics();System.exit(0);});
+		statisticsViewController.setOnQuitButtonAction(e ->statisticsStage.hide());
 		
-		if (treasureHuntState == null) {
-			treasureGenerator = new TreasureGenerator();
-		}
 		treasureFrameController.getTreasureField().setTreasureGenerator(treasureGenerator);
 		
-		if (treasureHuntState == null) {
-			treasureHuntState = new TreasureHuntState();
-		}
+//		if (treasureHuntState == null) {
+//			treasureGenerator = new TreasureGenerator();
+//		}
+//		treasureFrameController.getTreasureField().setTreasureGenerator(treasureGenerator);
+//		
+//		if (treasureHuntState == null) {
+//			treasureHuntState = new TreasureHuntState();
+//		}
+//		if(treasureHuntState.readStatistics()!=null)
+//			statistics = treasureHuntState.readStatistics();
+//		else
+//			statistics = new GameStatistics();
+		
 		mainViewController.setTreasureHuntState(treasureHuntState);
 		
 		if (this.statusBroadcaster != null) {
@@ -202,6 +235,7 @@ public class FrameContainer {
 		LOGGER.debug("showing puzzler screen.");
 		treasureFrameController.getTreasureField().placeTreasure();
 		LOGGER.debug("placed a treasure");
+		puzzlerFrameController.setGameStatistics(statistics);
 		this.puzzlerFrameController.showNewPuzzler(difficultyLevel);
 		showScreenWithFrame(this.puzzlerFrame, GameSettings.MSG_APP_TITLE_PUZZLER_KEY);
 	}
@@ -227,6 +261,10 @@ public class FrameContainer {
 			FIRST_RUN = false;
 			while(!showUsernamePopup());
 			statusBroadcaster.start();
+			statistics.addAttempts();
+			//------------show the statistic frame when game start------------
+			statisticsViewController.showAll();
+			showStatisticsPane();
 		}
 		
 		if (title_key != null && !title_key.isEmpty()) {
@@ -266,6 +304,24 @@ public class FrameContainer {
 	private void startMultiplayerGame() {
 		multiSetup.setScene(multiPopup);
 		multiSetup.show();
+	}
+	
+	//---------show the statistics frame----------------------
+	private void showStatisticsPane(){
+		statisticsStage.setScene(statisticsScene);
+		statisticsStage.showAndWait();
+		statisticsViewController.showAll();
+	}
+	
+	public void QuitandSaveStatistics(){
+		//statisticsViewController.showAll();
+		showStatisticsPane();
+		treasureHuntState.saveStatistics();
+//		showScreenWithFrame(this.statisticsFrame, GameSettings.MSG_APP_TITLE_STATISTICS_LIST_KEY);
+	}
+	
+	public void passStatisticsToTreasureHuntState(){
+		treasureHuntState.setStatistics(statistics);
 	}
 	
 	//----------method to show treasure screen----------------

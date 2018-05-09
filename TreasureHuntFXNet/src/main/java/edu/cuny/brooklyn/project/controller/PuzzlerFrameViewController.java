@@ -30,7 +30,7 @@ public class PuzzlerFrameViewController {
 	private Puzzler puzzler;
 	private int  answeringAttempts;
 
-	private GameStatisticsApp statistics;
+	private GameStatistics statistics;
 	
 	public void initialize() {
 		puzzlerMaker = new PuzzlerMaker();
@@ -66,6 +66,7 @@ public class PuzzlerFrameViewController {
 			LOGGER.debug("User's answer to the puzzler is wrong! This is attempt #" + answeringAttempts);
 			return false;
 		} else {
+			statistics.updateAttemptPuzzler(answeringAttempts);
 			LOGGER.debug("User's answer to the puzzler is correct, move on to locate the treasure." );
 			return true;
 		}
@@ -82,7 +83,7 @@ public class PuzzlerFrameViewController {
 		answeringAttempts = attempts;
 	}
 
-	public void setGameStatistics(GameStatisticsApp statistics) {
+	public void setGameStatistics(GameStatistics statistics) {
 		// TODO Auto-generated method stub
 		this.statistics = statistics;
 	}

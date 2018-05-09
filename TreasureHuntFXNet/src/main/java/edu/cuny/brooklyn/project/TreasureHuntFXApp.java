@@ -14,7 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.cuny.brooklyn.project.controller.FrameContainer;
-import edu.cuny.brooklyn.project.controller.GameStatisticsApp;
+import edu.cuny.brooklyn.project.controller.GameStatistics;
 import edu.cuny.brooklyn.project.message.I18n;
 import edu.cuny.brooklyn.project.net.StatusBroadcaster;
 import edu.cuny.brooklyn.project.net.StatusReciever;
@@ -28,7 +28,7 @@ public class TreasureHuntFXApp extends Application {
 
 	private StatusBroadcaster statusBroadcaster;
 	private StatusReciever statusReciever;
-	private GameStatisticsApp statistics;
+	private GameStatistics statistics;
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -44,7 +44,7 @@ public class TreasureHuntFXApp extends Application {
 
 		statusReciever = new StatusReciever();
 		statusBroadcaster = new StatusBroadcaster();
-		statistics = new GameStatisticsApp();
+		statistics = new GameStatistics();
 		FrameContainer frameContainer = new FrameContainer(primaryStage, bundle, statusReciever);
 		frameContainer.setGameStatistics(statistics);
 		frameContainer.setStatusBroadcaster(statusBroadcaster);

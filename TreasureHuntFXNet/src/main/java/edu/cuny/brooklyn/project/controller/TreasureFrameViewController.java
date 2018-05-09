@@ -60,7 +60,8 @@ public class TreasureFrameViewController {
 	private int puzzlerAttempts;
 	private TreasureField treasureField;
 	
-	private GameStatisticsApp statistics;
+	private GameStatistics statistics;
+	private int locateAttempts;
 	
 	
 	// for resizing
@@ -103,6 +104,7 @@ public class TreasureFrameViewController {
 		//clear textField after user entered the location.
 		xPosTreasure.clear();
 		yPosTreasure.clear();
+		locateAttempts++;
 		
 		int xInput = -1;
 		int yInput = -1;
@@ -121,6 +123,10 @@ public class TreasureFrameViewController {
 			doneGuessing();
 			showTreasure();
 			updateScore();
+			//----update attempts of locate treasure, and score--------------
+			statistics.updateAttemptTreasure(locateAttempts);
+			statistics.updateScore(scorer.getRoundScore(), scorer.getTotalScore());
+			
 			statistics.updateScore(scorer.getRoundScore(), scorer.getTotalScore());
 		} else {
 			LOGGER.debug("No treasure at location (" + xInput + "," + yInput + ")");
@@ -140,6 +146,7 @@ public class TreasureFrameViewController {
 	public void setOnQuitButtonAction(EventHandler<ActionEvent> handler) {
 		buttonQuit.setOnAction(handler);
 	}
+	
 	
 	private void initializeScore() {
 		totalScoreLabel.setText(String.format(GameSettings.SCORE_FORMAT, 0));
@@ -219,5 +226,9 @@ public class TreasureFrameViewController {
 	
 	public int getAttempts() {
 		return puzzlerAttempts;
+	}
+	
+	public void setStatistics(GameStatistics statistics){
+		this.statistics=statistics;
 	}
 }

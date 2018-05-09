@@ -60,6 +60,7 @@ public class GameSettings {
 	public static final String PUZZLER_VIEW_PATH = "edu/cuny/brooklyn/project/view/fxml_puzzlerframeview.fxml";
 	public static final String FLASH_VIEW_PATH = "edu/cuny/brooklyn/project/view/fxml_flashframeview.fxml";
 	public static final String MULTIPLAYER_VIEW_PATH = "edu/cuny/brooklyn/project/view/fxml_multiplayerframeview.fxml";
+	public static final String STATISTICS_VIEW_PATH = "edu/cuny/brooklyn/project/view/fxml_statisticsPane.fxml";
 
 	
 	public final static String MSG_GAME_DESCRIPTION_KEY = "gameDescription";
@@ -87,4 +88,6 @@ public class GameSettings {
 	public static final String USN_DIALOG_HEADER_TEXT = "usnHeader";
 	public static final String USN_DIALOG_CONTENT_TEXT = "usnContext";
 	public static int DEFAULT_DIFFULTY = 2;
+	
+	public final static String MSG_APP_TITLE_STATISTICS_LIST_KEY = "appTitleStatisticsList";
 }
